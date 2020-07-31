@@ -44,6 +44,15 @@ app.get('/', (req, res) => {
 
 //GET
 //POST
+app.post('/api/movies', (req, res) => {
+    const newMovieText = req.body.newMovieText
+    //insert into database
+    connection.query('INSERT INTO movies (movie) VALUES (?)', [newMovieText], (err, response) => {
+        if (err) throw err
+    //redirect to home route
+    res.status(200).send()
+    })
+})
 //PUT
 //DELETE
 
