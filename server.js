@@ -30,6 +30,23 @@ connection.connect(function(err) {
 });
 
 
+//ROUTES SECTION//
+
+//UI route
+//render ui
+app.get('/', (req, res) => {
+    connection.query('SELECT * FROM movies', (err, data) => {
+        res.render('index', { movies: data })
+    })
+})
+
+//API ROUTES//
+
+//GET
+//POST
+//PUT
+//DELETE
+
 
 app.listen(PORT, function() {
     // Log (server-side) when our server has started
