@@ -5,7 +5,7 @@
     {{#each movies}}
     <li>
         {{id}} - {{movie}}
-        <button>&times;</button>
+        <button class="delete" data-movieid="{{id}}">&times;</button>
     </li>
     {{/each}}
 </ul>
@@ -15,6 +15,13 @@
 <button id="new-movie-button"> Add Movie </button>
 
 <h2> Update movie </h2>
+<select id="movie-selections">
+    {{#each movies}}
+        <option value="{{ id }}">{{ movie }}</option>
+    {{/each}}
+</select>
+<input id="update-movie-input" type="text" />
+<button id="update-movie-button"> Update Movie </button>
 
 </div>
 
@@ -23,7 +30,11 @@
     $(document).ready(function() {
     const $newMovieInput = $('#new-movie-input')
     const $newMovieButton = $('#new-movie-button')
-
+    const $deleteButtons = $('.delete')
+    const $select = $('#movie-selections')
+    const $updateMovieInput = $('#update-movie-input')
+    const $updateMovieButton = $('#update-movie-button')
+ 
     $newMovieButton.on('click', () => {
         const newMovieText = $newMovieInput.val().trim();
 
@@ -35,6 +46,26 @@
         .catch(err => console.log(err))
     });
 
+    $deleteButtons.on('click', function() {
+        const id = $(this).data('movieid')
+        $.ajax(`/api/movies/${id}`, {
+            type: 'DELETE'
+        })
+            .then(() => location.reload())
+            .catch(err => console.log(err))
+    })
+
+    $updateMovieButton.on('click', () => {
+        const id = $select.val()
+        const updatedMovieText = $updateMovieInput.val().trim();
+
+        $.ajax(`/api/movies/${id}`, {
+            type: 'PUT',
+            data: { updatedMovieText: updatedMovieText }
+        })
+        .then(() => location.reload())
+        .catch(err => console.log(err))
+    })
 
 
     });

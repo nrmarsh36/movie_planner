@@ -42,7 +42,6 @@ app.get('/', (req, res) => {
 
 //API ROUTES//
 
-//GET
 //POST
 app.post('/api/movies', (req, res) => {
     const newMovieText = req.body.newMovieText
@@ -53,8 +52,30 @@ app.post('/api/movies', (req, res) => {
     res.status(200).send()
     })
 })
+
+
 //PUT
+app.put("/api/movies/:id", (req, res) => {
+    const id = req.params.id
+    const updatedMovieText = req.body.updatedMovieText
+
+    connection.query('UPDATE movies SET movie = ? WHERE id = ?', [updatedMovieText, id], (err, result) => {
+        if (err) throw err
+        res.status(200).send()
+
+    })
+})
+
+
 //DELETE
+app.delete("/api/movies/:id", (req, res) => {
+    const id = req.params.id
+    connection.query('DELETE FROM movies WHERE ?', {id: id}, (err, result) => {
+        if (err) throw err
+        //redirect to home route
+        res.status(200).send()
+    })
+})
 
 
 app.listen(PORT, function() {
